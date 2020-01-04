@@ -1,5 +1,5 @@
 {
-  "name": "status-webhook",
+  "name": "discord-status-webhook",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,10 +7,11 @@
     "build": "tsc",
     "start": "node index.js"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Ben Richeson",
+  "license": "MIT",
   "dependencies": {
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.0",
+    "typescript": "^3.7.4"
   },
   "devDependencies": {
     "@types/node": "^13.1.2"
