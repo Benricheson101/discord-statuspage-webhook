@@ -1,8 +1,9 @@
 import * as fetch from "node-fetch";
-import {promises} from "fs";
+import {promises, writeFileSync} from "fs";
+import {stringify} from "querystring";
 
 export default class Status {
-    private _base = "https://status.discordapp.com";
+    private _base: string = "https://status.discordapp.com";
     readonly url: string;
 
     constructor(private path: string) {
@@ -10,25 +11,25 @@ export default class Status {
     };
 
     async save() {
-        return await promises.writeFile("./latest.json", JSON.stringify(await this.getCurrent(), null, 2));
+        return await promises.writeFile("./src/webhook/latest.json", JSON.stringify(await this.getCurrent(), null, 2));
     };
 
     async getCurrent() {
         return await fetch(this.url)
-            .then((res) => {
+            .then((res: any) => {
                 return res.json();
             });
     };
 
-    async getSaved(filePath?: string) {
-        let saved = await promises.readFile(filePath ? filePath : "./latest.json");
+    async getSaved(string?: string) {
+        let saved: Buffer = await promises.readFile(string ? string : "./src/webhook/latest.json");
         // @ts-ignore
         return JSON.parse(saved);
     };
 
     async genColor() {
-        let current = await this.getCurrent();
-        switch (await current.status.indicator) {
+        let current: object = await this.getCurrent();
+        switch (await current["status"].indicator) {
             case ("none"): {
                 return "2096947";
             }
@@ -46,5 +47,5 @@ export default class Status {
             }
         }
 
-    }
+    };
 };

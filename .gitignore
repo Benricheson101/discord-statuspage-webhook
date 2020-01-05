@@ -107,8 +107,7 @@ dist
 .vscode-test
 
 # Other files
-config.js
-latest.json
-index.js
-src/Status.js
+src/config.ts
+*.js
+*.json
 .idea/
