@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node ./src/webhook/index.js",
-    "setup": "npm install && tsc && node src/setup/setup.js"
+    "setup": "npm install && tsc src/setup/setup.ts && node src/setup/setup.js && tsc"
   },
   "author": "Ben Richeson",
   "license": "MIT",
