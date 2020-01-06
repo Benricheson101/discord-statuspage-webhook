@@ -17,25 +17,24 @@ export default class List {
             if (!this.data) return;
 
             // @ts-ignore
-            let {id, token, guild_id} = this.data;
-            let newHook = {
+            let {id, token, guild_id, channel_id} = this.data;
+            let newHook: object = {
                 id: id,
                 token: token,
-                guild_id: guild_id
+                guild_id: guild_id,
+                channel_id: channel_id
             };
             json["webhooks"].push(newHook);
 
             writeFileSync(this.path, JSON.stringify(json, null, 2));
         });
-
     }
 
     delete(id: string) {
         let saved: object[] = this.getSaved;
-        let removed = saved.filter((obj: any) => obj.id !== id);
+        let removed: object[] = saved.filter((obj: any) => obj.id !== id);
         if (removed === saved) return;
-        console.log(removed);
-        let json = {
+        let json: object = {
             webhooks: removed
         };
         writeFileSync(this.path, JSON.stringify(json, null, 2));

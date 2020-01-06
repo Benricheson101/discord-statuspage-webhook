@@ -1,13 +1,15 @@
 "use strict";
 import Status from "./Status";
 import * as fetch from "node-fetch";
-import {hook} from "../config";
+import {setup} from "../config";
 import {list} from "../web/server";
 
-
 console.log("Running.");
+
+run(); // run immediately on start
+setInterval(() => run(), 300000); // then run every 5 minutes
+
 async function start() {
-    console.log("Checking for updates.");
     let status = new Status("/index.json");
     let current: object = await status.getCurrent();
     let saved: object = await status.getSaved();
@@ -24,7 +26,7 @@ async function start() {
             } else description.push("No updates have been published.")
         } else description.push(newIncident["incident_updates"][0].body);
         let embed: object = {
-            "content": hook.content,
+            "content": setup .content,
             "embeds": [{
                 "title": "Status Page Update",
                 "url": newIncident["status"] === "resolved" ? newIncident["shortlink"] : "https://status.discordapp.com/",
@@ -38,7 +40,7 @@ async function start() {
         return;
     }
 
-    async function send(embed: Object) {
+    async function send(embed: object) {
         for (const hook of list.getSaved) {
             try {
                 await fetch(`https://discordapp.com/api/webhooks/${hook.id}/${hook.token}`, {
@@ -52,29 +54,16 @@ async function start() {
                     .catch((err: Error) => {
                         throw err;
                     });
-
-            }
-            catch (err) {
+            } catch (err) {
                 throw err;
             }
         }
     }
 }
 
-start()
-    .catch((err: Error) => {
-        throw err;
-    });
-setInterval(() => {
+function run() {
     start()
         .catch((err: Error) => {
             throw err;
-        });
-}, 300000); // runs every 5 minutes
-
-interface Webhook {
-    readonly id: string;
-    readonly token: string;
-    readonly guild_id: string;
+        })
 }
-

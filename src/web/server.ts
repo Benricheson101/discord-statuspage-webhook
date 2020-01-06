@@ -27,6 +27,7 @@ createServer(async (req: IncomingMessage, res: ServerResponse) => {
             body: data
         })
             .then((res: any) => {
+                console.log(res)
                 res = res.json();
                 return res;
             })
@@ -38,13 +39,23 @@ createServer(async (req: IncomingMessage, res: ServerResponse) => {
         await list.save();
 
         await send(webhook, {
-            content: "[Discord status page](https://status.discordapp.com) updates will be sent to this channel."
+            content: "This channel will now receive [Discord status page](https://status.discordapp.com) updates."
         })
-
     }
-    router.checkRoute(urlObj.pathname, res, req);
+    router.checkRoute(urlObj.pathname, req, res);
 })
     .listen(port);
+
+async function send(destination: SavedWebhook, embed: Object) {
+    await fetch(`https://discordapp.com/api/webhooks/${destination.id}/${destination.token}`, {
+        method: "post",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(embed)
+    })
+        .catch((err: Error) => {
+            throw err;
+        });
+}
 
 interface IncomingWebhook {
     webhook: {
@@ -59,13 +70,9 @@ interface IncomingWebhook {
     }
 }
 
-async function send(destination, embed: Object) {
-    await fetch(`https://discordapp.com/api/webhooks/${destination.id}/${destination.token}`, {
-        method: "post",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(embed)
-    })
-        .catch((err: Error) => {
-            throw err;
-        });
+interface SavedWebhook {
+    id: string;
+    token: string;
+    guild_id?: string;
+    channel_id?: string;
 }
