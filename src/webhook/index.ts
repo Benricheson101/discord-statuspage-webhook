@@ -4,7 +4,7 @@ import * as fetch from "node-fetch";
 import {setup} from "../config";
 import {list} from "../web/server";
 
-console.log("Running.");
+console.log("Script started successfully.");
 
 run(); // run immediately on start
 setInterval(() => run(), 300000); // then run every 5 minutes
@@ -13,6 +13,8 @@ async function start() {
     let status = new Status("/index.json");
     let current: object = await status.getCurrent();
     let saved: object = await status.getSaved();
+    if (Object.keys(saved).length < 1) return await status.save();
+
     if (current["incidents"][0].updated_at !== saved["incidents"][0].updated_at) {
         let newIncident: object = current["incidents"][0];
         let description: string[] = [];
@@ -26,13 +28,16 @@ async function start() {
             } else description.push("No updates have been published.")
         } else description.push(newIncident["incident_updates"][0].body);
         let embed: object = {
-            "content": setup .content,
+            "content": setup.content,
             "embeds": [{
                 "title": "Status Page Update",
                 "url": newIncident["status"] === "resolved" ? newIncident["shortlink"] : "https://status.discordapp.com/",
                 "color": await status.genColor(),
                 "description": description.join("\n"),
-                "timestamp": newIncident["incident_updates"][0].created_at
+                "timestamp": newIncident["incident_updates"][0].created_at,
+                "footer": {
+                    "text": "Made by: Ben.#0002"
+                }
             }]
         };
         await status.save();

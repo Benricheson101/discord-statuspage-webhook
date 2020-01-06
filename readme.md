@@ -3,14 +3,19 @@
 This script will send a message to your server when the [Discord status page](https://status.discordapp.com/) is updated
 
 ## Setup
+#### Auto-Setup (Recommended)
+1. Auto setup `npm run setup`
+
+#### Manual Setup
 1. Clone this repository
 2. Install the dependencies
 `npm install`
 3. Compile typescript
 `npm run build`
 4. Setup your config (see below)
-5. Make two blank json files: `src/webhook/latest.json` and `src/webhook/webhooks.json`
-6. Set your OAuth2 URL in index.html
+5. Make a blank JSON file: `src/webhook/latest.json`
+6. Setup the webhooks file (see below)
+6. Set your OAuth2 URL in `index.html`
 7. Start the script
 `npm run start`
 
@@ -18,7 +23,8 @@ This script will send a message to your server when the [Discord status page](ht
 Make `src/config.js` and configure the following:
 ```js
 module.exports.setup = {
-	content: "The status page has been updated." // leave blank for no message
+    content: "The status page has been updated.", // leave blank for no message
+    port: 80
 };
 
 module.exports.oauth = {
@@ -28,4 +34,12 @@ module.exports.oauth = {
     redirect_uri: "",
     scopes: "webhook.incoming"
 };
+```
+
+## Webhooks
+Make `src/webhooks/webhooks.json` containing the following:
+```json
+{
+  "webhooks": []
+}
 ```

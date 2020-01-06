@@ -3,10 +3,9 @@ import List from "./List";
 import {parse, UrlWithParsedQuery} from "url";
 import * as fetch from "node-fetch";
 import * as FormData from "form-data";
-import {oauth} from "../config";
+import {oauth, setup} from "../config";
 import {router} from "./router";
 
-const port: number = 53134;
 export const list = new List("src/webhook/webhooks.json");
 console.log("Server started.");
 createServer(async (req: IncomingMessage, res: ServerResponse) => {
@@ -27,24 +26,29 @@ createServer(async (req: IncomingMessage, res: ServerResponse) => {
             body: data
         })
             .then((res: any) => {
-                console.log(res)
                 res = res.json();
                 return res;
             })
             .catch((err: Error) => {
+                router.checkRoute("/error", req, res);
                 throw err;
             });
+
+        if (!webhook) {
+            router.checkRoute("/error", req, res);
+            return;
+        }
 
         list.data = webhook;
         await list.save();
 
         await send(webhook, {
-            content: "This channel will now receive [Discord status page](https://status.discordapp.com) updates."
+            content: "This channel will now receive [Discord status page](https://status.discordapp.com) updates.\nTo stop receiving these updates, simply delete the webhook."
         })
     }
     router.checkRoute(urlObj.pathname, req, res);
 })
-    .listen(port);
+    .listen(setup.port);
 
 async function send(destination: SavedWebhook, embed: Object) {
     await fetch(`https://discordapp.com/api/webhooks/${destination.id}/${destination.token}`, {

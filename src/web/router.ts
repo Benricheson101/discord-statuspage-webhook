@@ -25,6 +25,13 @@ export const router = {
                 }));
                 break;
             }
+            case ("/error"): {
+                readFile("src/web/pages/error.html", ((err: Error, data: Buffer) => {
+                    if (err) throw err;
+                    res.end(data);
+                }));
+                break;
+            }
             default: {
                 res.end("An error occurred.");
             }
