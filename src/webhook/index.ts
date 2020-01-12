@@ -31,7 +31,7 @@ async function start() {
             "content": setup.content,
             "embeds": [{
                 "title": "Status Page Update",
-                "url": newIncident["status"] === "resolved" ? newIncident["shortlink"] : "https://status.discordapp.com/",
+                "url": newIncident["shortlink"] || "https://status.discordapp.com/",
                 "color": await status.genColor(),
                 "description": description.join("\n"),
                 "timestamp": newIncident["incident_updates"][0].created_at,

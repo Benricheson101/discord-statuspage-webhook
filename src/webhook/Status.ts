@@ -29,21 +29,25 @@ export default class Status {
 
     async genColor() {
         let current: object = await this.getCurrent();
-        switch (await current["status"].indicator) {
-            case ("none"): {
-                return "2096947";
+        // @ts-ignore
+        switch (await current.incidents[0].status) {
+            case ("resolved"):
+            case ("completed"): {
+                return "2096947"; // green
             }
-            case ("minor"): {
-                return "15922754";
+            case ("in_progress"):
+            case ("monitoring"): {
+                return "15922754"; // yellow
             }
-            case ("major"): {
-                return "15571250";
+            case ("investigating"): {
+                return "15571250"; // orange
             }
-            case ("critical"): {
-                return "15544882";
+            case ("identified"): {
+                return "15544882"; // red
             }
-            case ("maintenance"): {
-                return "4360181";
+            case ("scheduled"):
+            case ("verifying"): {
+                return "4360181"; // light blue
             }
         }
 
