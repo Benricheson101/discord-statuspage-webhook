@@ -53,9 +53,9 @@ async function start() {
                     headers: {"Content-Type": "application/json"},
                     body: JSON.stringify(embed)
                 })
-                    .then((res: any) => {
-                        if (res.status !== 204) list.delete(hook.id)
-                    })
+                    // .then((res: any) => {
+                    //     if (res.status !== 204) list.delete(hook.id)
+                    // })
                     .catch((err: Error) => {
                         throw err;
                     });
