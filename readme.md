@@ -1,6 +1,6 @@
 # Discord Status Webhook
 ## What is it?
-This script will send a message to your server when the [Discord status page](https://status.discordapp.com/) is updated
+This script will send a message to your server when the [Discord status page](https://status.discord.com/) is updated
 
 ## Setup
 #### Auto-Setup (Recommended)
