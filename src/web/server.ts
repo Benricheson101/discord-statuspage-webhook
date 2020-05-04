@@ -21,7 +21,7 @@ createServer(async (req: IncomingMessage, res: ServerResponse) => {
         data.append("scopes", oauth.scopes);
         data.append("code", accessCode);
 
-        let {webhook}: IncomingWebhook = await fetch("https://discordapp.com/api/oauth2/token", {
+        let {webhook}: IncomingWebhook = await fetch("https://discord.com/api/oauth2/token", {
             method: "POST",
             body: data
         })
@@ -43,7 +43,7 @@ createServer(async (req: IncomingMessage, res: ServerResponse) => {
         await list.save();
 
         await send(webhook, {
-            content: "This channel will now receive [Discord status page](https://status.discordapp.com) updates.\nTo stop receiving these updates, simply delete the webhook."
+            content: "This channel will now receive [Discord status page](https://status.discord.com) updates.\nTo stop receiving these updates, simply delete the webhook."
         })
     }
     router.checkRoute(urlObj.pathname, req, res);
@@ -51,7 +51,7 @@ createServer(async (req: IncomingMessage, res: ServerResponse) => {
     .listen(setup.port);
 
 async function send(destination: SavedWebhook, embed: Object) {
-    await fetch(`https://discordapp.com/api/webhooks/${destination.id}/${destination.token}`, {
+    await fetch(`https://discord.com/api/webhooks/${destination.id}/${destination.token}`, {
         method: "post",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(embed)

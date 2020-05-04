@@ -34,7 +34,7 @@ module.exports.oauth = {
     }
 
     console.log("Fetching data for latest.json");
-    let statusData = await fetch("https://status.discordapp.com/index.json")
+    let statusData = await fetch("https://status.discord.com/index.json")
         .then((res: any) => res.json());
     await promises.writeFile("src/webhook/latest.json", JSON.stringify(await statusData, null, 2));
 
