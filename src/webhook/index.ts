@@ -31,7 +31,7 @@ async function start() {
             "content": setup.content,
             "embeds": [{
                 "title": "Status Page Update",
-                "url": newIncident["shortlink"] || "https://status.discordapp.com/",
+                "url": newIncident["shortlink"] || "https://status.discord.com/",
                 "color": await status.genColor(),
                 "description": description.join("\n"),
                 "timestamp": newIncident["incident_updates"][0].created_at,
@@ -48,7 +48,7 @@ async function start() {
     async function send(embed: object) {
         for (const hook of list.getSaved) {
             try {
-                await fetch(`https://discordapp.com/api/webhooks/${hook.id}/${hook.token}`, {
+                await fetch(`https://discord.com/api/webhooks/${hook.id}/${hook.token}`, {
                     method: "post",
                     headers: {"Content-Type": "application/json"},
                     body: JSON.stringify(embed)
