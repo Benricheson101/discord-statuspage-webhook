@@ -3,7 +3,7 @@ import {promises, writeFileSync} from "fs";
 import {stringify} from "querystring";
 
 export default class Status {
-    private _base: string = "https://status.discordapp.com";
+    private _base: string = "https://status.discord.com";
     readonly url: string;
 
     constructor(private path: string) {
